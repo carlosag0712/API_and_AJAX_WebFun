@@ -8,20 +8,68 @@
       pokeHTMLmon = "";
 
       for(var i=1; i<152;i++){
-        pokeHTMLmon += "<img src='http://pokeapi.co/media/img/"+i + ".png'>"
-        console.log(pokeHTMLmon);
+        pokeHTMLmon += "<img id='"+i+"' src='http://pokeapi.co/media/img/"+i + ".png'>"
+        //console.log(pokeHTMLmon);
       }
-
       $(document).ready(function(){
         $('#pokemon').append(pokeHTMLmon);
 
-      });
+        $(document).on('click','img', function(){
+          var id = $(this).attr('id');
+          $.get("http://pokeapi.co/api/v1/pokemon/"+id+"/",function(res){
+            var pokename = res.name;
+            var poketype = "";
+            var pokeheight = res.height;
+            var pokeweight = res.weight;
 
+            for(var i =0; i<res['types'].length;i++){
+              poketype += "<li>"+res['types'][i]['name']+"</li>";
+            }
+
+            $('#pokedetails').html("<h1>"+pokename+"</h1>"+
+              "<img id='"+id+"' src='http://pokeapi.co/media/img/"+id+ ".png'>"+
+              "<h3>Types</h3>"+
+              "<ul>"+poketype+"</ul>"+
+              "<h3>Height</h3>"+
+              "<p>"+pokeheight+"</p>"+
+              "<h3>Weight</h3>"+
+              "<p>"+pokeweight+"</p>");
+
+
+          })
+
+
+        })
+
+
+      });
     </script>
+    <style>
+    #pokemon{
+      width: 900px;
+      text-align: left;
+      display: inline-block;
+    }
+
+    #pokedetails{
+      text-align: left;
+      width: auto;
+      margin-left: 50px;
+      margin-top: 50px;
+      height: auto;
+      border: 1px dotted red;
+      display: inline-block;
+      vertical-align: top;
+      position: fixed;
+      padding: 10px;
+    }
+
+
+
+    </style>
   </head>
   <body>
-    <div id="pokemon">
-
-    </div>
+    <div id="pokemon"></div>
+    <div id="pokedetails"></div>
   </body>
 </html>
