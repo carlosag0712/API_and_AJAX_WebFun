@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('form').submit(function(){
+          var APIKEY = '616d79c5ec84281beb8d08784cc9cb4d';
+          var city = $('#searchCity').val();
+          $.get("http://api.openweathermap.org/data/2.5/weather?q="+city+"&units=metric&appid="+APIKEY, function(res) {
+            $('.container').append(
+              "<h1> The weather for: "+res.name+"</h1>"+
+              '<h3>Winds</h3>'+
+              '<ul><li>Speed: '+res.wind.speed+'</li>'+
+              '<li>Deg: '+res.wind.deg+'</li></ul>'+
+              '<h3 style="margin-top:15px">Description</h3>'+
+              '<ul><li>Description: '+res.weather[0].description+'</li>'+
+              '<li>Temperature: '+res.main.temp+'</li></ul>'
+            );
+        }, 'json');
+        // don't forget to return false so the page doesn't refresh
+        return false;
+        });
+      });
+    </script>
+    <style>
+      .container{
+        width: 970px;
+        margin: 0px auto;
+      }
+
+      form{
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Please Enter a City to display the weather</h1>
+      <form>
+        <label for="">Enter the city you want to check out!
+          <input type="text" id="searchCity" name="searchCity">
+        </label>
+        <input type="submit" name="submit">
+      </form>
+    </div>
+  </body>
+</html>
